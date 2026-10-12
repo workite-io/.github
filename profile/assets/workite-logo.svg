@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" role="img" aria-labelledby="title desc">
+  <title id="title">Workite horizontal logo for light backgrounds</title>
+  <desc id="desc">The Workite Raft Cluster icon with a dark wordmark and product slogan.</desc>
+  <defs>
+    <linearGradient id="cluster-gradient" x1="48" y1="46" x2="264" y2="250" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0EA5E9"/>
+      <stop offset="1" stop-color="#4F46E5"/>
+    </linearGradient>
+    <linearGradient id="tail-gradient" x1="152" y1="210" x2="168" y2="294" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3965E6"/>
+      <stop offset="0.2" stop-color="#3965E6"/>
+      <stop offset="0.58" stop-color="#4F46E5"/>
+      <stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+    <filter id="cluster-shadow" x="-25%" y="-25%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#1E3A8A" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  <g transform="translate(28 12)">
+    <path d="M152 208C152 218 152 229 152 239C152 248 166 253 176 260C188 269 187 282 168 294" fill="none" stroke="url(#tail-gradient)" stroke-width="7" stroke-linecap="round"/>
+    <path d="M152 22 272 147 152 226 32 147Z" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="3"/>
+    <path d="M152 22 272 147 152 226 32 147Z" fill="none" stroke="url(#cluster-gradient)" stroke-width="8" stroke-linejoin="round"/>
+    <g fill="none" stroke="#93C5FD" stroke-width="4">
+      <path d="m152 68-54 72 54 50 54-50Z"/>
+      <path d="M98 140h108M152 68v122"/>
+    </g>
+    <g filter="url(#cluster-shadow)">
+      <circle cx="152" cy="68" r="19" fill="#0284C7"/>
+      <circle cx="98" cy="140" r="19" fill="#2563EB"/>
+      <circle cx="206" cy="140" r="19" fill="#4F46E5"/>
+      <circle cx="152" cy="190" r="19" fill="#7C3AED"/>
+      <circle cx="152" cy="140" r="24" fill="#F59E0B" stroke="#fff" stroke-width="6"/>
+    </g>
+    <g fill="#fff">
+      <circle cx="152" cy="68" r="5"/>
+      <circle cx="98" cy="140" r="5"/>
+      <circle cx="206" cy="140" r="5"/>
+      <circle cx="152" cy="190" r="5"/>
+      <path d="m143 140 6 6 13-14" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <circle cx="168" cy="294" r="7" fill="#F59E0B"/>
+  </g>
+  <g transform="translate(355 67)">
+    <text x="0" y="105" fill="#111827" font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="112" font-weight="760" letter-spacing="-5">Workite</text>
+    <rect x="6" y="131" width="64" height="5" rx="2.5" fill="#F59E0B"/>
+    <text x="84" y="145" fill="#475569" font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="27" font-weight="560" letter-spacing="1.4">RELIABLE WORKFLOWS AT ANY SCALE</text>
+  </g>
+</svg>

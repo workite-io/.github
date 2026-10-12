@@ -1,0 +1,330 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2800" height="1630" viewBox="0 0 2800 1630" role="img" aria-labelledby="title desc">
+  <title id="title">Workite Distributed Architecture</title>
+  <desc id="desc">Workite architecture with a stateless Gateway tier, a single-Raft-group Placement Driver control plane, and a multi-Raft-group Broker data plane.</desc>
+  <style>
+    .bg { fill: #151515; }
+    .outer { fill: none; stroke: #303030; stroke-width: 2; }
+    .panel { fill: #191919; stroke: #484848; stroke-width: 2; stroke-dasharray: 10 8; }
+    .subpanel { fill: #1d1d1d; stroke: #404040; stroke-width: 2; }
+    .node { fill: #202020; stroke: #484848; stroke-width: 2; }
+    .cell { fill: #1b1b1b; stroke: #474747; stroke-width: 2; }
+    .cell-leader { fill: #211e18; stroke: #e2b85f; stroke-width: 2; }
+    .state-item { fill: #202020; stroke: #414141; stroke-width: 1.5; }
+    .band-raft { fill: #15231c; stroke: #35d58c; stroke-width: 1.5; }
+    .band-gateway { fill: #182127; stroke: #62b4ff; stroke-width: 1.5; }
+
+    .title { fill: #f0f0f0; font: 600 34px "PingFang SC", "SF Pro Text", sans-serif; }
+    .subtitle { fill: #a4a4a4; font: 400 20px "PingFang SC", "SF Pro Text", sans-serif; }
+    .section-kicker { fill: #8c8c8c; font: 600 15px "SF Mono", Menlo, monospace; }
+    .section-title { fill: #ededed; font: 600 25px "PingFang SC", "SF Pro Text", sans-serif; }
+    .section-meta { fill: #9e9e9e; font: 400 17px "PingFang SC", "SF Pro Text", sans-serif; }
+    .node-title { fill: #ededed; font: 600 21px "PingFang SC", "SF Pro Text", sans-serif; }
+    .node-code { fill: #d7d7d7; font: 500 18px "SF Mono", Menlo, monospace; }
+    .node-meta { fill: #9e9e9e; font: 400 16px "PingFang SC", "SF Pro Text", sans-serif; }
+    .band-title { fill: #e7fff2; font: 600 19px "PingFang SC", "SF Pro Text", sans-serif; }
+    .band-meta { fill: #a8c8b8; font: 400 16px "PingFang SC", "SF Pro Text", sans-serif; }
+    .cell-title { fill: #e8e8e8; font: 600 18px "PingFang SC", "SF Pro Text", sans-serif; }
+    .cell-meta { fill: #929292; font: 400 15px "PingFang SC", "SF Pro Text", sans-serif; }
+    .state-title { fill: #dddddd; font: 500 17px "PingFang SC", "SF Pro Text", sans-serif; }
+    .tiny { fill: #8f8f8f; font: 400 14px "PingFang SC", "SF Pro Text", sans-serif; }
+
+    .badge { fill: #252525; stroke: #494949; stroke-width: 1.5; }
+    .badge-blue { fill: #18242c; stroke: #62b4ff; stroke-width: 1.5; }
+    .badge-green { fill: #17271f; stroke: #35d58c; stroke-width: 1.5; }
+    .badge-amber { fill: #282217; stroke: #e2b85f; stroke-width: 1.5; }
+    .badge-text { fill: #d9d9d9; font: 600 14px "PingFang SC", "SF Pro Text", sans-serif; }
+    .badge-text-blue { fill: #b8ddff; font: 600 14px "PingFang SC", "SF Pro Text", sans-serif; }
+    .badge-text-green { fill: #baf2d4; font: 600 14px "PingFang SC", "SF Pro Text", sans-serif; }
+    .badge-text-amber { fill: #f3d89d; font: 600 14px "SF Mono", Menlo, monospace; }
+
+    .edge { fill: none; stroke: #a2a2a2; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+    .edge-blue { fill: none; stroke: #62b4ff; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+    .edge-amber { fill: none; stroke: #e2b85f; stroke-width: 4; stroke-dasharray: 12 10; stroke-linecap: round; stroke-linejoin: round; }
+    .edge-raft { fill: none; stroke: #35d58c; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+    .edge-scale { fill: none; stroke: #62b4ff; stroke-width: 2.5; stroke-dasharray: 8 8; stroke-linecap: round; }
+    .arrow { fill: #a2a2a2; }
+    .arrow-blue { fill: #62b4ff; }
+    .arrow-amber { fill: #e2b85f; }
+    .arrow-raft { fill: #35d58c; }
+
+    .label-box { fill: #151515; stroke: #454545; stroke-width: 1.5; }
+    .label-box-blue { fill: #151515; stroke: #62b4ff; stroke-width: 1.5; }
+    .label-box-amber { fill: #151515; stroke: #e2b85f; stroke-width: 1.5; }
+    .label { fill: #dfdfdf; font: 500 16px "PingFang SC", "SF Pro Text", sans-serif; }
+    .label-blue { fill: #bee2ff; font: 500 16px "PingFang SC", "SF Pro Text", sans-serif; }
+    .label-amber { fill: #f1d79e; font: 500 16px "PingFang SC", "SF Pro Text", sans-serif; }
+
+    .legend { fill: #1b1b1b; stroke: #3d3d3d; stroke-width: 1.5; }
+    .legend-text { fill: #d4d4d4; font: 500 16px "PingFang SC", "SF Pro Text", sans-serif; }
+    .legend-note { fill: #909090; font: 400 15px "PingFang SC", "SF Pro Text", sans-serif; }
+  </style>
+
+  <rect class="bg" x="0" y="0" width="2800" height="1630" rx="8"/>
+  <rect class="outer" x="1" y="1" width="2798" height="1628" rx="8"/>
+
+  <text class="title" x="48" y="66">Workite Distributed Architecture</text>
+  <text class="subtitle" x="48" y="106">Stateless routing is decoupled from the control plane; PD uses one metadata Raft group, while Brokers host an independent Raft group per partition</text>
+
+  <!-- Access and stateless routing -->
+  <rect class="panel" x="48" y="150" width="2704" height="390" rx="8"/>
+  <text class="section-kicker" x="76" y="188">ACCESS &amp; ROUTING</text>
+  <text class="section-title" x="76" y="220">Stateless entry and routing</text>
+
+  <rect class="node" x="100" y="250" width="282" height="110" rx="8"/>
+  <text class="node-title" x="241" y="295" text-anchor="middle">Client</text>
+  <text class="node-meta" x="241" y="329" text-anchor="middle">Workflow, job, and query requests</text>
+
+  <rect class="node" x="100" y="390" width="282" height="110" rx="8"/>
+  <text class="node-title" x="241" y="435" text-anchor="middle">Worker</text>
+  <text class="node-meta" x="241" y="469" text-anchor="middle">Job API and lifecycle reporting</text>
+
+  <rect class="subpanel" x="850" y="205" width="1850" height="315" rx="8"/>
+  <text class="section-title" x="880" y="248">Gateway pool</text>
+  <text class="section-meta" x="1085" y="248">Any instance can accept traffic; only routing topology is cached locally</text>
+  <rect class="badge-blue" x="2438" y="224" width="224" height="30" rx="8"/>
+  <text class="badge-text-blue" x="2550" y="244" text-anchor="middle">STATELESS · SCALE OUT</text>
+
+  <rect class="node" x="900" y="290" width="370" height="140" rx="8"/>
+  <text class="node-title" x="1085" y="332" text-anchor="middle">Gateway 1</text>
+  <text class="node-code" x="1085" y="370" text-anchor="middle">gRPC :26500</text>
+  <text class="node-meta" x="1085" y="404" text-anchor="middle">Auth · tenant context · routing</text>
+
+  <rect class="node" x="1520" y="290" width="370" height="140" rx="8"/>
+  <text class="node-title" x="1705" y="332" text-anchor="middle">Gateway 2</text>
+  <text class="node-code" x="1705" y="370" text-anchor="middle">gRPC :26500</text>
+  <text class="node-meta" x="1705" y="404" text-anchor="middle">Auth · tenant context · routing</text>
+
+  <text class="section-title" x="2075" y="370" text-anchor="middle">···</text>
+
+  <rect class="node" x="2260" y="290" width="370" height="140" rx="8"/>
+  <text class="node-title" x="2445" y="332" text-anchor="middle">Gateway N</text>
+  <text class="node-code" x="2445" y="370" text-anchor="middle">gRPC :26500</text>
+  <text class="node-meta" x="2445" y="404" text-anchor="middle">Auth · tenant context · routing</text>
+
+  <path class="edge-scale" d="M914 448 H2616"/>
+  <path class="arrow-blue" d="M914 441 L900 448 L914 455 Z"/>
+  <path class="arrow-blue" d="M2616 441 L2630 448 L2616 455 Z"/>
+  <rect class="label-box-blue" x="1649" y="464" width="232" height="32" rx="8"/>
+  <text class="label-blue" x="1765" y="486" text-anchor="middle">Scale out · no session state</text>
+
+  <path class="edge" d="M394 305 H830"/>
+  <path class="arrow" d="M830 294 L850 305 L830 316 Z"/>
+  <rect class="label-box" x="516" y="257" width="136" height="32" rx="8"/>
+  <text class="label" x="584" y="279" text-anchor="middle">Business API</text>
+
+  <path class="edge" d="M394 445 H830"/>
+  <path class="arrow" d="M830 434 L850 445 L830 456 Z"/>
+  <rect class="label-box" x="514" y="397" width="92" height="32" rx="8"/>
+  <text class="label" x="560" y="419" text-anchor="middle">Job API</text>
+
+  <!-- Cross-layer request paths -->
+  <path class="edge-blue" d="M241 512 V648"/>
+  <path class="arrow-blue" d="M230 648 L241 668 L252 648 Z"/>
+  <rect class="label-box-blue" x="35" y="570" width="190" height="34" rx="8"/>
+  <text class="label-blue" x="130" y="593" text-anchor="middle">Worker register / renew</text>
+
+  <path class="edge-blue" d="M1600 552 V580 Q1600 600 1580 600 H580 Q560 600 560 620 V648"/>
+  <path class="arrow-blue" d="M1589 552 L1600 532 L1611 552 Z"/>
+  <path class="arrow-blue" d="M549 648 L560 668 L571 648 Z"/>
+  <rect class="label-box-blue" x="998" y="550" width="324" height="34" rx="8"/>
+  <text class="label-blue" x="1160" y="573" text-anchor="middle">Topology poll + server-stream watch</text>
+
+  <path class="edge" d="M2445 532 V648"/>
+  <path class="arrow" d="M2434 648 L2445 668 L2456 648 Z"/>
+  <rect class="label-box" x="2159" y="570" width="244" height="34" rx="8"/>
+  <text class="label" x="2281" y="593" text-anchor="middle">gRPC + SBE · Leader route</text>
+
+  <!-- Placement Driver control plane -->
+  <rect class="panel" x="48" y="680" width="820" height="730" rx="8"/>
+  <text class="section-kicker" x="78" y="720">CONTROL PLANE</text>
+  <text class="section-title" x="78" y="754">Placement Driver metadata cluster</text>
+  <rect class="badge" x="610" y="704" width="218" height="30" rx="8"/>
+  <text class="badge-text" x="719" y="724" text-anchor="middle">Admin HTTP :19001</text>
+
+  <rect class="band-raft" x="80" y="775" width="756" height="58" rx="8"/>
+  <text class="band-title" x="458" y="801" text-anchor="middle">Single Raft Group · pd-control</text>
+  <text class="band-meta" x="458" y="823" text-anchor="middle">One replicated state machine stores all control-plane metadata</text>
+
+  <rect class="node" x="80" y="870" width="220" height="210" rx="8"/>
+  <text class="node-title" x="190" y="910" text-anchor="middle">PD 1</text>
+  <rect class="badge-amber" x="140" y="928" width="100" height="28" rx="8"/>
+  <text class="badge-text-amber" x="190" y="947" text-anchor="middle">LEADER</text>
+  <line x1="102" y1="974" x2="278" y2="974" stroke="#3f3f3f" stroke-width="1.5"/>
+  <text class="node-code" x="190" y="1010" text-anchor="middle">gRPC :26501</text>
+  <text class="node-code" x="190" y="1044" text-anchor="middle">Raft :26502</text>
+
+  <rect class="node" x="348" y="870" width="220" height="210" rx="8"/>
+  <text class="node-title" x="458" y="910" text-anchor="middle">PD 2</text>
+  <rect class="badge" x="398" y="928" width="120" height="28" rx="8"/>
+  <text class="badge-text" x="458" y="947" text-anchor="middle">FOLLOWER</text>
+  <line x1="370" y1="974" x2="546" y2="974" stroke="#3f3f3f" stroke-width="1.5"/>
+  <text class="node-code" x="458" y="1010" text-anchor="middle">gRPC :26501</text>
+  <text class="node-code" x="458" y="1044" text-anchor="middle">Raft :26502</text>
+
+  <rect class="node" x="616" y="870" width="220" height="210" rx="8"/>
+  <text class="node-title" x="726" y="910" text-anchor="middle">PD 3</text>
+  <rect class="badge" x="666" y="928" width="120" height="28" rx="8"/>
+  <text class="badge-text" x="726" y="947" text-anchor="middle">FOLLOWER</text>
+  <line x1="638" y1="974" x2="814" y2="974" stroke="#3f3f3f" stroke-width="1.5"/>
+  <text class="node-code" x="726" y="1010" text-anchor="middle">gRPC :26501</text>
+  <text class="node-code" x="726" y="1044" text-anchor="middle">Raft :26502</text>
+
+  <path class="edge-raft" d="M312 975 H336"/>
+  <path class="arrow-raft" d="M312 969 L302 975 L312 981 Z"/>
+  <path class="arrow-raft" d="M336 969 L346 975 L336 981 Z"/>
+  <path class="edge-raft" d="M580 975 H604"/>
+  <path class="arrow-raft" d="M580 969 L570 975 L580 981 Z"/>
+  <path class="arrow-raft" d="M604 969 L614 975 L604 981 Z"/>
+
+  <rect class="subpanel" x="80" y="1110" width="756" height="235" rx="8"/>
+  <text class="section-title" x="108" y="1148">Replicated state machine</text>
+  <text class="section-meta" x="420" y="1148">RocksDB · event-sourced Raft state</text>
+
+  <rect class="state-item" x="105" y="1170" width="340" height="64" rx="8"/>
+  <text class="state-title" x="125" y="1200">Broker cluster metadata</text>
+  <text class="tiny" x="125" y="1224">Scale, partitions, replicas, and membership</text>
+
+  <rect class="state-item" x="470" y="1170" width="340" height="64" rx="8"/>
+  <text class="state-title" x="490" y="1200">Broker / Worker registration leases</text>
+  <text class="tiny" x="490" y="1224">REGISTER → RENEW → DEREGISTER</text>
+
+  <rect class="state-item" x="105" y="1254" width="340" height="64" rx="8"/>
+  <text class="state-title" x="125" y="1284">PD / Broker topology</text>
+  <text class="tiny" x="125" y="1308">Leader, voter, learner, and health status</text>
+
+  <rect class="state-item" x="470" y="1254" width="340" height="64" rx="8"/>
+  <text class="state-title" x="490" y="1284">Topology change plans</text>
+  <text class="tiny" x="490" y="1308">Scale, catch-up, promotion, and leader transfer</text>
+
+  <!-- Broker data plane -->
+  <rect class="panel" x="1300" y="680" width="1452" height="730" rx="8"/>
+  <text class="section-kicker" x="1330" y="720">DATA PLANE</text>
+  <text class="section-title" x="1330" y="754">Broker data cluster</text>
+  <text class="section-meta" x="1620" y="754">Example: 3 Brokers · 3 Partitions · RF=3</text>
+
+  <rect class="band-raft" x="1330" y="775" width="1392" height="58" rx="8"/>
+  <text class="band-title" x="2026" y="801" text-anchor="middle">Multi-Raft-Group Cluster</text>
+  <text class="band-meta" x="2026" y="823" text-anchor="middle">Each partition is an independent Raft group with isolated election, replication, and state</text>
+
+  <rect class="node" x="1330" y="870" width="410" height="475" rx="8"/>
+  <rect class="node" x="1821" y="870" width="410" height="475" rx="8"/>
+  <rect class="node" x="2312" y="870" width="410" height="475" rx="8"/>
+
+  <text class="node-title" x="1535" y="906" text-anchor="middle">Broker 1</text>
+  <text class="node-code" x="1535" y="936" text-anchor="middle">Command :26501 · Raft :26502</text>
+  <text class="node-title" x="2026" y="906" text-anchor="middle">Broker 2</text>
+  <text class="node-code" x="2026" y="936" text-anchor="middle">Command :26501 · Raft :26502</text>
+  <text class="node-title" x="2517" y="906" text-anchor="middle">Broker 3</text>
+  <text class="node-code" x="2517" y="936" text-anchor="middle">Command :26501 · Raft :26502</text>
+
+  <path class="edge-raft" d="M1764 1013 H1797"/>
+  <path class="arrow-raft" d="M1764 1005 L1752 1013 L1764 1021 Z"/>
+  <path class="arrow-raft" d="M1797 1005 L1809 1013 L1797 1021 Z"/>
+  <path class="edge-raft" d="M2255 1013 H2288"/>
+  <path class="arrow-raft" d="M2255 1005 L2243 1013 L2255 1021 Z"/>
+  <path class="arrow-raft" d="M2288 1005 L2300 1013 L2288 1021 Z"/>
+
+  <path class="edge-raft" d="M1764 1121 H1797"/>
+  <path class="arrow-raft" d="M1764 1113 L1752 1121 L1764 1129 Z"/>
+  <path class="arrow-raft" d="M1797 1113 L1809 1121 L1797 1129 Z"/>
+  <path class="edge-raft" d="M2255 1121 H2288"/>
+  <path class="arrow-raft" d="M2255 1113 L2243 1121 L2255 1129 Z"/>
+  <path class="arrow-raft" d="M2288 1113 L2300 1121 L2288 1129 Z"/>
+
+  <path class="edge-raft" d="M1764 1229 H1797"/>
+  <path class="arrow-raft" d="M1764 1221 L1752 1229 L1764 1237 Z"/>
+  <path class="arrow-raft" d="M1797 1221 L1809 1229 L1797 1237 Z"/>
+  <path class="edge-raft" d="M2255 1229 H2288"/>
+  <path class="arrow-raft" d="M2255 1221 L2243 1229 L2255 1237 Z"/>
+  <path class="arrow-raft" d="M2288 1221 L2300 1229 L2288 1237 Z"/>
+
+  <rect class="cell-leader" x="1354" y="970" width="362" height="86" rx="8"/>
+  <text class="cell-title" x="1376" y="1003">Partition 1</text>
+  <rect class="badge-amber" x="1596" y="986" width="96" height="28" rx="8"/>
+  <text class="badge-text-amber" x="1644" y="1005" text-anchor="middle">LEADER</text>
+  <text class="cell-meta" x="1376" y="1035">Raft Group P1 · processing state</text>
+
+  <rect class="cell" x="1845" y="970" width="362" height="86" rx="8"/>
+  <text class="cell-title" x="1867" y="1003">Partition 1</text>
+  <rect class="badge" x="2070" y="986" width="112" height="28" rx="8"/>
+  <text class="badge-text" x="2126" y="1005" text-anchor="middle">FOLLOWER</text>
+  <text class="cell-meta" x="1867" y="1035">Raft Group P1 · replay state</text>
+
+  <rect class="cell" x="2336" y="970" width="362" height="86" rx="8"/>
+  <text class="cell-title" x="2358" y="1003">Partition 1</text>
+  <rect class="badge" x="2561" y="986" width="112" height="28" rx="8"/>
+  <text class="badge-text" x="2617" y="1005" text-anchor="middle">FOLLOWER</text>
+  <text class="cell-meta" x="2358" y="1035">Raft Group P1 · replay state</text>
+
+  <rect class="cell" x="1354" y="1078" width="362" height="86" rx="8"/>
+  <text class="cell-title" x="1376" y="1111">Partition 2</text>
+  <rect class="badge" x="1579" y="1094" width="112" height="28" rx="8"/>
+  <text class="badge-text" x="1635" y="1113" text-anchor="middle">FOLLOWER</text>
+  <text class="cell-meta" x="1376" y="1143">Raft Group P2 · replay state</text>
+
+  <rect class="cell-leader" x="1845" y="1078" width="362" height="86" rx="8"/>
+  <text class="cell-title" x="1867" y="1111">Partition 2</text>
+  <rect class="badge-amber" x="2087" y="1094" width="96" height="28" rx="8"/>
+  <text class="badge-text-amber" x="2135" y="1113" text-anchor="middle">LEADER</text>
+  <text class="cell-meta" x="1867" y="1143">Raft Group P2 · processing state</text>
+
+  <rect class="cell" x="2336" y="1078" width="362" height="86" rx="8"/>
+  <text class="cell-title" x="2358" y="1111">Partition 2</text>
+  <rect class="badge" x="2561" y="1094" width="112" height="28" rx="8"/>
+  <text class="badge-text" x="2617" y="1113" text-anchor="middle">FOLLOWER</text>
+  <text class="cell-meta" x="2358" y="1143">Raft Group P2 · replay state</text>
+
+  <rect class="cell" x="1354" y="1186" width="362" height="86" rx="8"/>
+  <text class="cell-title" x="1376" y="1219">Partition 3</text>
+  <rect class="badge" x="1579" y="1202" width="112" height="28" rx="8"/>
+  <text class="badge-text" x="1635" y="1221" text-anchor="middle">FOLLOWER</text>
+  <text class="cell-meta" x="1376" y="1251">Raft Group P3 · replay state</text>
+
+  <rect class="cell" x="1845" y="1186" width="362" height="86" rx="8"/>
+  <text class="cell-title" x="1867" y="1219">Partition 3</text>
+  <rect class="badge" x="2070" y="1202" width="112" height="28" rx="8"/>
+  <text class="badge-text" x="2126" y="1221" text-anchor="middle">FOLLOWER</text>
+  <text class="cell-meta" x="1867" y="1251">Raft Group P3 · replay state</text>
+
+  <rect class="cell-leader" x="2336" y="1186" width="362" height="86" rx="8"/>
+  <text class="cell-title" x="2358" y="1219">Partition 3</text>
+  <rect class="badge-amber" x="2578" y="1202" width="96" height="28" rx="8"/>
+  <text class="badge-text-amber" x="2626" y="1221" text-anchor="middle">LEADER</text>
+  <text class="cell-meta" x="2358" y="1251">Raft Group P3 · processing state</text>
+
+  <text class="tiny" x="1535" y="1312" text-anchor="middle">Local groups share one JRaftServer</text>
+  <text class="tiny" x="2026" y="1312" text-anchor="middle">Local groups share one JRaftServer</text>
+  <text class="tiny" x="2517" y="1312" text-anchor="middle">Local groups share one JRaftServer</text>
+
+  <!-- PD and Broker control channel -->
+  <path class="edge-blue" d="M1288 1030 H900"/>
+  <path class="arrow-blue" d="M900 1019 L880 1030 L900 1041 Z"/>
+  <rect class="label-box-blue" x="884" y="982" width="400" height="32" rx="8"/>
+  <text class="label-blue" x="1084" y="1004" text-anchor="middle">Broker register / renew · replica role and progress</text>
+
+  <path class="edge-amber" d="M880 1210 H1268"/>
+  <path class="arrow-amber" d="M1268 1199 L1288 1210 L1268 1221 Z"/>
+  <rect class="label-box-amber" x="934" y="1226" width="300" height="32" rx="8"/>
+  <text class="label-amber" x="1084" y="1248" text-anchor="middle">Topology watch · change operation</text>
+
+  <!-- Legend -->
+  <rect class="legend" x="48" y="1470" width="2704" height="120" rx="8"/>
+
+  <path class="edge" d="M100 1512 H168"/>
+  <path class="arrow" d="M168 1504 L180 1512 L168 1520 Z"/>
+  <text class="legend-text" x="202" y="1518">Business requests</text>
+
+  <path class="edge-blue" d="M700 1512 H768"/>
+  <path class="arrow-blue" d="M768 1504 L780 1512 L768 1520 Z"/>
+  <text class="legend-text" x="802" y="1518">Topology sync and lifecycle reporting</text>
+
+  <path class="edge-amber" d="M1400 1512 H1468"/>
+  <path class="arrow-amber" d="M1468 1504 L1480 1512 L1468 1520 Z"/>
+  <text class="legend-text" x="1502" y="1518">Topology change operations</text>
+
+  <path class="edge-raft" d="M2100 1512 H2168"/>
+  <path class="arrow-raft" d="M2168 1504 L2180 1512 L2168 1520 Z"/>
+  <text class="legend-text" x="2202" y="1518">Raft election and log replication</text>
+
+  <text class="legend-note" x="100" y="1560">Role placement is illustrative: PD has one Raft group; every Broker partition elects independently, and leaders can move between Brokers.</text>
+</svg>
