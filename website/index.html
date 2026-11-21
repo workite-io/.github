@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#2563eb">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Workite 是基于 Multi-Raft 的分布式工作流引擎。使用 BPMN 定义业务流程，以持久状态、复制日志和独立分区，让工作流在故障后继续向前。">
+  <meta property="og:title" content="Workite — Make workflows work.">
+  <meta property="og:description" content="让每一个工作流可靠运转。探索 Workite 的持久执行、分布式架构与开发者入口。">
+  <meta property="og:type" content="website">
+  <title>Workite — 让每一个工作流可靠运转。</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./app.js" defer></script>
+</head>
+<body id="top">
+  <a class="skip-link" href="#main">跳转到内容</a>
+  <svg class="svg-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="kite-gradient" x1="48" y1="46" x2="264" y2="250" gradientUnits="userSpaceOnUse"><stop stop-color="#0EA5E9"/><stop offset="1" stop-color="#4F46E5"/></linearGradient>
+      <linearGradient id="kite-tail" x1="152" y1="210" x2="168" y2="294" gradientUnits="userSpaceOnUse"><stop stop-color="#3965E6"/><stop offset=".58" stop-color="#4F46E5"/><stop offset="1" stop-color="#7C3AED"/></linearGradient>
+      <symbol id="workite-mark" viewBox="0 0 320 320">
+        <g transform="translate(8 6)">
+          <path d="M152 208C152 218 152 229 152 239C152 248 166 253 176 260C188 269 187 282 168 294" fill="none" stroke="url(#kite-tail)" stroke-width="7" stroke-linecap="round"/>
+          <path d="M152 22 272 147 152 226 32 147Z" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="3"/>
+          <path d="M152 22 272 147 152 226 32 147Z" fill="none" stroke="url(#kite-gradient)" stroke-width="8" stroke-linejoin="round"/>
+          <g fill="none" stroke="#93C5FD" stroke-width="4"><path d="m152 68-54 72 54 50 54-50Z"/><path d="M98 140h108M152 68v122"/></g>
+          <circle cx="152" cy="68" r="19" fill="#0284C7"/><circle cx="98" cy="140" r="19" fill="#2563EB"/><circle cx="206" cy="140" r="19" fill="#4F46E5"/><circle cx="152" cy="190" r="19" fill="#7C3AED"/>
+          <circle cx="152" cy="140" r="24" fill="#F59E0B" stroke="#fff" stroke-width="6"/>
+          <g fill="#fff"><circle cx="152" cy="68" r="5"/><circle cx="98" cy="140" r="5"/><circle cx="206" cy="140" r="5"/><circle cx="152" cy="190" r="5"/><path d="m143 140 6 6 13-14" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g>
+          <circle cx="168" cy="294" r="7" fill="#F59E0B"/>
+        </g>
+      </symbol>
+      <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="component-gateway" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="7" height="7" rx="2"/><path d="M12 3v5.5M3 12h5.5M15.5 12H21M12 15.5V21m-2-16 2-2 2 2m5 5 2 2-2 2m-9 5 2 2 2-2"/></symbol>
+      <symbol id="component-broker" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="7" rx="2"/><rect x="3" y="14" width="18" height="7" rx="2"/><path d="M7 6.5h.01M7 17.5h.01M12 6.5h5m-5 11h5M12 10v4"/></symbol>
+      <symbol id="component-worker" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="m9 8-4 4 4 4m6-8 4 4-4 4m-4 2 2-12"/></symbol>
+      <symbol id="component-pd" viewBox="0 0 24 24"><circle cx="12" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M12 8v4m-7 4v-4h14v4"/></symbol>
+      <symbol id="github" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.86c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.64-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02A9.55 9.55 0 0 1 12 6.82c.85 0 1.71.11 2.51.34 1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></symbol>
+    </defs>
+  </svg>
+
+  <header class="site-header">
+    <nav class="nav wrap" aria-label="主导航">
+      <a class="wordmark" href="#top" aria-label="Workite 首页"><img src="./favicon.svg" width="36" height="36" alt=""><span>Workite<span class="wordmark-dot">.</span></span></a>
+      <div class="nav-links"><a href="#reliability">可靠执行</a><a href="#architecture">系统架构</a><a href="#developers">开发者</a></div>
+      <div class="nav-actions">
+        <button id="motion-toggle" class="motion-toggle" type="button" aria-pressed="false" aria-label="暂停动态效果"><span class="pause-symbol" aria-hidden="true"></span><span class="motion-label">暂停动效</span></button>
+        <a class="nav-github" href="https://github.com/workite-io/workite"><svg aria-hidden="true"><use href="#github"/></svg><span>GitHub</span><span aria-hidden="true">↗</span></a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <a class="release-pill" href="#current-scope"><span class="status-dot" aria-hidden="true"></span>积极开发中 <span class="mono">0.1.0-SNAPSHOT</span><span aria-hidden="true">↗</span></a>
+        <p class="eyebrow">DISTRIBUTED WORKFLOW ENGINE</p>
+        <h1 id="hero-title">让每一个工作流，<br><span>可靠运转。</span></h1>
+        <p class="hero-english">Make workflows work.</p>
+        <p class="hero-description">你定义业务流程，Workite 负责可靠运行。<br>基于 Multi-Raft 的分布式工作流引擎，<br class="desktop-break">让状态持久保存，让流程在故障之后继续向前。</p>
+        <div class="hero-actions"><a class="button primary" href="#developers">快速开始<svg aria-hidden="true"><use href="#arrow"/></svg></a><a class="button text-button" href="#architecture">探索架构<span aria-hidden="true">↓</span></a></div>
+        <p class="hero-note">BPMN 2.0 <span aria-hidden="true">·</span> Multi-Raft <span aria-hidden="true">·</span> gRPC</p>
+      </div>
+      <div class="hero-art system-art">
+        <div class="art-topline"><span class="mono">DISTRIBUTED. COORDINATED. RELIABLE.</span><span class="art-key"><i aria-hidden="true"></i>组件协作</span></div>
+        <div class="system-illustration" role="img" aria-labelledby="system-title system-desc">
+          <span id="system-title" class="visually-hidden">Workite 分布式协作风筝</span>
+          <span id="system-desc" class="visually-hidden">PD、Gateway、Broker、Worker 四个等规格组件节点共同构成风筝轮廓，中央是 Workite 品牌标识。PD 提供一致性协调，Gateway 统一接入，Broker 复制状态，Worker 并行执行业务。四类组件均可由多个实例组成，流光表达持续协作；具体通信关系见下方系统架构。</span>
+          <svg class="system-field" viewBox="0 0 640 530" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="assembly-wash" x1="320" y1="80" x2="320" y2="430" gradientUnits="userSpaceOnUse"><stop class="assembly-wash-start"/><stop offset="1" class="assembly-wash-end"/></linearGradient>
+              <linearGradient id="assembly-color" x1="114" y1="88" x2="526" y2="432" gradientUnits="userSpaceOnUse"><stop stop-color="#0EA5E9"/><stop offset=".5" stop-color="#2563EB"/><stop offset="1" stop-color="#4F46E5"/></linearGradient>
+              <radialGradient id="assembly-glow"><stop class="assembly-glow-color" stop-opacity=".2"/><stop offset="1" class="assembly-glow-color" stop-opacity="0"/></radialGradient>
+              <path id="assembly-path" pathLength="1000" d="M320 88 526 260 320 432 114 260Z"/>
+            </defs>
+            <path class="assembly-horizon" d="M320 59 560 260 320 461 80 260Z"/>
+            <use href="#assembly-path" fill="url(#assembly-wash)"/>
+            <ellipse cx="320" cy="265" rx="136" ry="144" fill="url(#assembly-glow)"/>
+            <use href="#assembly-path" class="assembly-band"/>
+            <use href="#assembly-path" class="assembly-outline"/>
+            <use href="#assembly-path" class="assembly-progress"/>
+          </svg>
+          <div class="system-core">
+            <svg class="system-mark" viewBox="0 0 320 320" aria-hidden="true"><use href="#workite-mark" width="320" height="320"/></svg>
+            <span class="system-wordmark">Workite<span>.</span></span>
+          </div>
+          <div class="system-station station-pd" data-component="pd">
+            <div class="station-symbol"><div class="station-disc"><svg aria-hidden="true"><use href="#component-pd"/></svg></div></div>
+            <strong>PD</strong><span>一致性协调</span>
+          </div>
+          <div class="system-station station-gateway" data-component="gateway">
+            <div class="station-symbol"><div class="station-disc"><svg aria-hidden="true"><use href="#component-gateway"/></svg></div></div>
+            <strong>Gateway</strong><span>无状态接入</span>
+          </div>
+          <div class="system-station station-broker" data-component="broker">
+            <div class="station-symbol"><div class="station-disc"><svg aria-hidden="true"><use href="#component-broker"/></svg></div></div>
+            <strong>Broker</strong><span>多副本状态</span>
+          </div>
+          <div class="system-station station-worker" data-component="worker">
+            <div class="station-symbol"><div class="station-disc"><svg aria-hidden="true"><use href="#component-worker"/></svg></div></div>
+            <strong>Worker</strong><span>并行业务执行</span>
+          </div>
+        </div>
+        <div class="art-bottomline"><span class="art-caption">四个组件，协同驱动每一程。</span></div>
+      </div>
+    </section>
+
+    <section class="section principles-section wrap" id="reliability" aria-labelledby="reliability-title">
+      <div class="section-intro reveal"><p class="eyebrow">DEFINE ONCE. RUN RELIABLY.</p><h2 id="reliability-title">业务可以复杂。<br><span class="muted-heading">运行，应该可靠。</span></h2><p>从业务步骤到长期等待，流程的每一次变化都有迹可循。</p></div>
+      <div class="principles-grid">
+        <article class="principle reveal"><div class="principle-graphic log-graphic" aria-hidden="true"><span>Command</span><i>→</i><span>Event</span><i>→</i><span>State</span></div><h3>状态留下来，流程走下去。</h3><p>命令与事件写入只追加的复制日志，已提交的流程状态持久保存，不随单个进程的生命周期消失。</p><span class="feature-tag">复制日志 · 持久状态</span></article>
+        <article class="principle reveal"><div class="principle-graphic partition-graphic" aria-hidden="true"><span>P1<i></i></span><span>P2<i></i></span><span>P3<i></i></span></div><h3>分区独立，规模从容。</h3><p>每个业务分区运行独立的 Raft Group。Broker 与分区可以分别扩展，把流程处理负载分散到集群。</p><span class="feature-tag">Multi-Raft · 水平扩展</span></article>
+        <article class="principle reveal"><div class="principle-graphic recovery-graphic" aria-hidden="true"><span>故障</span><i></i><span>恢复</span><i></i><b>继续</b></div><h3>故障之后，从正确位置继续。</h3><p>通过快照与日志重放恢复已提交状态。任务失败与超时进入恢复路径，重试耗尽时由 Incident 保留问题。</p><span class="feature-tag">快照恢复 · 重试 · Incident</span></article>
+      </div>
+    </section>
+
+    <section class="architecture-section" id="architecture" aria-labelledby="architecture-title">
+      <div class="wrap">
+        <div class="architecture-intro reveal"><div><p class="eyebrow">ONE ENGINE. MANY RAFT GROUPS.</p><h2 id="architecture-title">各司其职。<br>一起，让流程向前。</h2></div><p>无状态入口、强一致控制面、分区化数据面。<br>跟随一次流程执行，看见系统如何协同。</p></div>
+        <div class="architecture-demo reveal" id="architecture-demo" data-scenario="execution" data-step="0" data-playing="false">
+          <div class="demo-toolbar">
+            <div class="scenario-tabs" role="tablist" aria-label="架构演示场景"><button type="button" role="tab" aria-selected="true" aria-controls="architecture-panel" id="tab-execution" data-scenario="execution">流程执行</button><button type="button" role="tab" aria-selected="false" aria-controls="architecture-panel" id="tab-failover" data-scenario="failover" tabindex="-1">故障恢复</button><button type="button" role="tab" aria-selected="false" aria-controls="architecture-panel" id="tab-scale" data-scenario="scale" tabindex="-1">水平扩展</button></div>
+            <span class="demo-label"><span class="demo-key"><i class="key-active" aria-hidden="true"></i>当前步骤</span><span class="demo-key"><i class="key-idle" aria-hidden="true"></i>常态</span><span class="demo-key"><i class="key-fault" aria-hidden="true"></i>故障</span></span>
+          </div>
+          <div id="architecture-panel" role="tabpanel" aria-labelledby="tab-execution">
+            <p class="scroll-hint">横向浏览完整架构 <span aria-hidden="true">↔</span></p>
+            <div class="topology-scroll" tabindex="0" role="region" aria-label="系统架构图，窄屏可横向滚动">
+              <div class="topology">
+                <div class="access-plane" aria-hidden="true"><span class="plane-label">入口与无状态路由</span></div>
+                <svg class="topology-wires" viewBox="0 0 1200 720" preserveAspectRatio="none" aria-hidden="true">
+                  <g class="wire-base">
+                    <path data-link="client-gateway" d="M252 94H360" data-arrow-end/>
+                    <path data-link="gateway-broker" d="M1054 245V331" data-arrow-end/>
+                    <path data-link="gateway-pd" d="M768 245V290Q768 304 754 304H333Q319 304 319 318V331" data-arrow-start data-arrow-end/>
+                    <path data-link="worker-gateway" d="M252 202H360" data-arrow-end/>
+                    <path data-link="worker-pd" d="M138 245V331" data-arrow-end/>
+                    <path data-link="broker-pd" d="M540 475H420" data-arrow-end/>
+                    <path data-link="pd-broker" d="M420 583H540" data-arrow-end/>
+                    <path data-link="replication-1-1" d="M740 448H755" data-arrow-start data-arrow-end/><path data-link="replication-1-2" d="M945 448H960" data-arrow-start data-arrow-end/>
+                    <path data-link="replication-2-1" d="M740 501H755" data-arrow-start data-arrow-end/><path data-link="replication-2-2" d="M945 501H960" data-arrow-start data-arrow-end/>
+                    <path data-link="replication-3-1" d="M740 554H755" data-arrow-start data-arrow-end/><path data-link="replication-3-2" d="M945 554H960" data-arrow-start data-arrow-end/>
+                  </g>
+                  <path class="wire wire-request" data-link="client-gateway" d="M252 94H360"/><path class="wire wire-request" data-link="gateway-broker" d="M1054 245V331"/>
+                  <path class="wire wire-control" data-link="gateway-pd" d="M768 245V290Q768 304 754 304H333Q319 304 319 318V331"/><path class="wire wire-control" data-link="broker-pd" d="M540 475H420"/><path class="wire wire-control" data-link="pd-broker" d="M420 583H540"/>
+                  <path class="wire wire-worker" data-link="worker-gateway" d="M252 202H360"/><path class="wire wire-worker" data-link="worker-pd" d="M138 245V331"/>
+                  <path class="wire wire-replication" data-link="replication" d="M740 448H755M945 448H960M740 501H755M945 501H960M740 554H755M945 554H960"/>
+                  <g class="topology-arrowheads"></g>
+                </svg>
+                <div class="client-node topology-node"><div><strong>Client</strong><small>部署 · 流程实例 · 查询</small></div></div>
+                <div class="gateway-pool topology-node"><div class="node-head"><strong>Gateway 实例池</strong><span class="node-chip">无状态 · 独立扩展</span></div><div class="gateway-instances"><span>Gateway 1</span><span>Gateway 2</span><span class="extra-gateway">Gateway 3</span><span class="gateway-more" aria-hidden="true">···</span><span>Gateway N</span></div><small>统一接入 · 租户上下文 · 拓扑路由</small></div>
+                <span class="client-api-label">Business API</span><span class="route-label">Leader 路由</span><span class="topology-sync">拓扑同步 / Watch</span><span class="worker-api-label">Job API</span><span class="worker-registration-label">注册 / 续约</span>
+                <div class="control-plane topology-node"><div class="node-head"><div><span class="plane-label">控制面</span><strong>Placement Driver</strong></div><span class="group-badge">单 Raft Group</span></div><div class="pd-nodes"><span>PD 1<b>Leader</b></span><span>PD 2<b>Follower</b></span><span>PD 3<b>Follower</b></span></div><p>集群元数据 · 注册与租约<br>拓扑状态 · 成员变更计划</p><div class="pd-state"><span>强一致元数据</span><span>多副本复制</span></div></div>
+                <div class="data-plane" role="group" aria-label="Broker 集群，三个独立业务分区，每个分区三个副本">
+                  <div class="plane-heading"><div><span class="plane-label">数据面</span><strong>Broker 集群</strong></div><span class="group-badge">Multi-Raft · RF = 3 示例</span></div>
+                  <div class="broker-grid">
+                    <div class="broker topology-node" id="broker-1"><div class="broker-header"><strong>Broker 1</strong><span class="broker-health">在线</span></div><div class="partition leader" data-partition="1" data-broker="1"><span>P1</span><b>Leader</b></div><div class="partition" data-partition="2" data-broker="1"><span>P2</span><b>Follower</b></div><div class="partition" data-partition="3" data-broker="1"><span>P3</span><b>Follower</b></div><small>流程状态机</small></div>
+                    <div class="broker topology-node" id="broker-2"><div class="broker-header"><strong>Broker 2</strong><span class="broker-health">在线</span></div><div class="partition" data-partition="1" data-broker="2"><span>P1</span><b>Follower</b></div><div class="partition leader" data-partition="2" data-broker="2"><span>P2</span><b>Leader</b></div><div class="partition" data-partition="3" data-broker="2"><span>P3</span><b>Follower</b></div><small>流程状态机</small></div>
+                    <div class="broker topology-node" id="broker-3"><div class="broker-header"><strong>Broker 3</strong><span class="broker-health">在线</span></div><div class="partition" data-partition="1" data-broker="3"><span>P1</span><b>Follower</b></div><div class="partition" data-partition="2" data-broker="3"><span>P2</span><b>Follower</b></div><div class="partition leader" data-partition="3" data-broker="3"><span>P3</span><b>Leader</b></div><small>流程状态机</small></div>
+                  </div>
+                  <div class="scale-node" id="scale-node"><span>+ Broker 4</span><b>准备加入</b></div>
+                </div>
+                <div class="workers topology-node"><div><strong>Workers</strong><small>执行业务 · 上报结果</small></div></div>
+                <span class="broker-registration-label">注册 / 角色上报</span><span class="topology-change-label">拓扑 / 成员变更</span>
+              </div>
+            </div>
+            <div class="demo-narrative"><div aria-live="polite" aria-atomic="true"><span id="demo-counter" class="mono">01 / 04</span><h3 id="demo-title">流程，从统一入口出发。</h3><p id="demo-description">Client 创建流程实例，Gateway 按拓扑将请求路由到目标分区的 Leader。</p></div><div class="demo-controls"><button id="demo-prev" class="icon-button" type="button" aria-label="上一步" disabled>←</button><button id="demo-play" class="play-button" type="button" aria-pressed="false"><span aria-hidden="true">▷</span><span>播放演示</span></button><button id="demo-next" class="icon-button" type="button" aria-label="下一步">→</button></div></div>
+            <div id="demo-steps" class="demo-steps" aria-label="演示步骤"></div>
+          </div>
+        </div>
+        <div class="architecture-notes"><p>示意采用三个副本；故障恢复以 Raft 多数派可用为前提。</p><a class="inline-link" href="./assets/workite-technical-architecture.zh-CN.svg" target="_blank" rel="noopener">查看完整技术架构 <span aria-hidden="true">↗</span></a></div>
+        <div class="architecture-benefits"><div><span class="mono">ACCESS</span><h3>接入层，轻盈无状态。</h3><p>Gateway 缓存拓扑，独立扩展。Client 与 Worker 都通过统一入口访问业务 API。</p></div><div><span class="mono">CONTROL</span><h3>控制面，保持一致。</h3><p>PD 用单一 Raft Group 复制元数据、注册租约和拓扑变更计划。</p></div><div><span class="mono">DATA</span><h3>数据面，按分区协同。</h3><p>每个分区独立复制与选主。Worker 向 PD 注册，通过 Gateway 激活与完成任务。</p></div></div>
+      </div>
+    </section>
+
+    <section class="section workflow-section wrap" aria-labelledby="workflow-title">
+      <div class="workflow-copy reveal"><p class="eyebrow">YOU DEFINE THE JOURNEY.</p><h2 id="workflow-title">把业务画清楚。<br><span class="muted-heading">让流程跑起来。</span></h2><p>使用 BPMN 2.0 定义流程，用 Worker 连接你的业务服务。串行、并行、条件分支与事件等待，组成可执行的业务路径。</p><a class="inline-link" href="https://github.com/workite-io/workite/blob/main/README.zh-CN.md">了解流程编排 <span aria-hidden="true">↗</span></a></div>
+      <div class="workflow-canvas reveal" role="img" aria-label="订单流程示意：开始后校验订单，条件判断通过则支付并发货，未通过则结束。">
+        <div class="workflow-top"><span class="mono">BPMN · ORDER FLOW</span><span class="workflow-tag">流程示意</span></div>
+        <svg viewBox="0 0 640 290" class="bpmn-preview" aria-hidden="true">
+          <defs><marker id="flow-arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 7 4 0 8" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs>
+          <g class="bpmn-lines" fill="none" stroke="currentColor" stroke-width="2" marker-end="url(#flow-arrow)"><path d="M65 140H104"/><path d="M234 140H269"/><path d="M326 140H365"/><path d="M495 140H548"/><path d="M298 167V228Q298 240 310 240H555V163"/></g>
+          <circle cx="44" cy="140" r="20" class="bpmn-event"/><circle cx="570" cy="140" r="21" class="bpmn-event bpmn-end"/>
+          <rect x="110" y="101" width="124" height="78" rx="12" class="bpmn-task"/><text x="172" y="145" text-anchor="middle">校验订单</text>
+          <path d="m298 112 28 28-28 28-28-28Z" class="bpmn-decision"/><path d="m291 133 14 14m0-14-14 14" class="bpmn-decision-cross"/>
+          <rect x="370" y="101" width="124" height="78" rx="12" class="bpmn-task bpmn-task-active"/><text x="432" y="145" text-anchor="middle">支付与发货</text>
+          <text x="44" y="189" text-anchor="middle" class="bpmn-label">开始</text><text x="345" y="119" text-anchor="middle" class="bpmn-label">通过</text><text x="348" y="230" text-anchor="middle" class="bpmn-label">未通过</text><text x="570" y="189" text-anchor="middle" class="bpmn-label">结束</text>
+        </svg>
+        <p class="workflow-caption">流程定义负责路径。引擎记录状态。Worker 执行业务。</p>
+      </div>
+    </section>
+
+    <section class="section lifecycle-section wrap" id="execution" aria-labelledby="execution-title">
+      <div class="lifecycle-copy reveal"><p class="eyebrow">EVERY STEP HAS A STATE.</p><h2 id="execution-title">从流程到任务。<br><span class="muted-heading">每一步，都有着落。</span></h2><p>流程到达 Service Task 后创建 Job。Worker 领取并执行业务，明确上报完成或失败，让结果回到流程中。</p><a class="inline-link" href="https://github.com/workite-io/workite/blob/main/gateway-protocol/src/main/resources/gateway.proto">查看任务与流程 API <span aria-hidden="true">↗</span></a></div>
+      <div class="lifecycle-card reveal">
+        <div class="lifecycle-top"><span class="mono">SERVICE TASK → JOB</span><span class="task-type">payment</span></div>
+        <div class="lifecycle-track" aria-label="任务生命周期"><button type="button" class="lifecycle-step current" data-stage="0" aria-pressed="true"><span class="step-circle">1</span><span>创建</span></button><span class="track-line" aria-hidden="true"></span><button type="button" class="lifecycle-step" data-stage="1" aria-pressed="false"><span class="step-circle">2</span><span>就绪</span></button><span class="track-line" aria-hidden="true"></span><button type="button" class="lifecycle-step" data-stage="2" aria-pressed="false"><span class="step-circle">3</span><span>激活</span></button><span class="track-line" aria-hidden="true"></span><button type="button" class="lifecycle-step" data-stage="3" aria-pressed="false"><span class="step-circle">4</span><span>完成</span></button></div>
+        <div class="lifecycle-detail" aria-live="polite" aria-atomic="true"><div class="lifecycle-state mono" id="lifecycle-state">CREATED</div><h3 id="lifecycle-title">流程到达任务节点，Job 随之创建。</h3><p id="lifecycle-description">已激活的 Service Task 产生业务 Job，保存任务类型、变量与重试信息。</p></div>
+        <div class="recovery-branch"><span class="branch-arrow" aria-hidden="true">↳</span><p><strong>执行失败或超时？</strong> 任务进入重试与恢复路径；重试耗尽时创建 Incident，修复后可继续处理。</p></div>
+        <button class="inline-link replay-button" id="lifecycle-play" type="button" aria-pressed="false"><span aria-hidden="true">▷</span>播放任务旅程</button>
+      </div>
+    </section>
+
+    <section class="observe-section" aria-labelledby="observe-title">
+      <div class="wrap observe-layout">
+        <div class="observe-copy reveal"><p class="eyebrow">OBSERVE EVERY STEP.</p><h2 id="observe-title">可靠运行。<br>也要看得清楚。</h2><p>流程、任务与 Incident 状态可以查询。<br>Prometheus 指标接入现有 Grafana 看板，<br>观察引擎处理、日志复制与集群运行。</p><a class="inline-link" href="https://github.com/workite-io/workite/blob/main/docs/metrics.md">查看指标与 Grafana 指南 <span aria-hidden="true">↗</span></a></div>
+        <div class="observability-panel reveal"><div class="observe-panel-head"><span class="mono">WORKITE → PROMETHEUS → GRAFANA</span><span class="metric-tag">指标示意</span></div><div class="observability-list"><div><span class="observe-indicator" aria-hidden="true"></span><span>流程与任务</span><small>生命周期事件</small></div><div><span class="observe-indicator" aria-hidden="true"></span><span>引擎与分区</span><small>记录处理与复制</small></div><div><span class="observe-indicator incident-indicator" aria-hidden="true"></span><span>Incident</span><small>问题与待处理状态</small></div></div><div class="observability-foot"><span>沿用你的监控工作流。</span><a href="https://github.com/workite-io/workite/tree/main/monitor/grafana">Grafana 看板 <span aria-hidden="true">↗</span></a></div></div>
+      </div>
+    </section>
+
+    <section class="developer-section" id="developers" aria-labelledby="developers-title">
+      <div class="wrap developer-layout">
+        <div class="developer-copy reveal"><p class="eyebrow">BUILT FOR BUILDERS.</p><h2 id="developers-title">你写业务。<br>Workite 让它运转。</h2><p>结构化 gRPC API，连接多语言客户端。<br>从 Go SDK 到 wkctl，开始构建你的第一个流程。</p><a class="button primary" href="https://github.com/workite-io/workite">查看 GitHub<svg aria-hidden="true"><use href="#github"/></svg></a><div class="developer-requirements"><span>Java 21</span><span>Maven</span><span>Go SDK</span></div></div>
+        <div class="code-card reveal">
+          <div class="code-toolbar"><div role="tablist" aria-label="快速开始示例" class="code-tabs"><button type="button" id="code-tab-build" role="tab" aria-controls="code-build" aria-selected="true" data-code="build">构建</button><button type="button" id="code-tab-go" role="tab" aria-controls="code-go" aria-selected="false" data-code="go" tabindex="-1">Go SDK</button><button type="button" id="code-tab-cli" role="tab" aria-controls="code-cli" aria-selected="false" data-code="cli" tabindex="-1">wkctl</button></div><button id="copy-code" type="button" aria-label="复制当前代码示例">复制 <span aria-hidden="true">⧉</span></button></div>
+          <div id="code-build" class="code-panel" role="tabpanel" aria-labelledby="code-tab-build"><div class="code-language mono">TERMINAL</div><pre tabindex="0"><code><span class="comment"># 获取并构建 Workite</span>
+git clone https://github.com/workite-io/workite.git
+cd workite
+mvn clean verify
+
+<span class="comment"># 构建后使用 scripts/ 配置并启动各角色</span>
+<span class="comment"># Placement Driver → Broker → Gateway</span></code></pre><p class="code-caption">构建需要 Java 21 与 Maven。完整的集群配置和注册步骤见仓库启动脚本。</p></div>
+          <div id="code-go" class="code-panel" role="tabpanel" aria-labelledby="code-tab-go" hidden><div class="code-language mono">GO · 已连接 client，已部署 order 流程</div><pre tabindex="0"><code><span class="comment">// 用变量启动一个流程实例</span>
+response, err := client.
+    NewCreateInstanceCommand().
+    BPMNProcessID(<span class="string">"order"</span>).
+    Variables(map[string]any{<span class="string">"orderId"</span>: 42}).
+    Send(context.Background())
+<span class="keyword">if</span> err != nil {
+    log.Fatal(err)
+}
+log.Printf(<span class="string">"instance %d"</span>,
+    response.GetProcessInstanceKey())</code></pre><p class="code-caption">片段来自 Go SDK。连接配置、资源部署和 Worker 示例见完整指南。</p></div>
+          <div id="code-cli" class="code-panel" role="tabpanel" aria-labelledby="code-tab-cli" hidden><div class="code-language mono">TERMINAL · demo 集群已配置并运行</div><pre tabindex="0"><code>cd clients/go
+go build -o bin/wkctl ./cmd/wkctl
+export WORKITE_CLUSTER_ID=demo
+
+<span class="comment"># 部署流程，创建实例</span>
+bin/wkctl deploy resource order.bpmn
+bin/wkctl create instance order \
+  --variables <span class="string">'{"orderId":42}'</span>
+
+<span class="comment"># 为 payment 类型启动一个 Worker</span>
+bin/wkctl activate jobs payment --handler cat</code></pre><p class="code-caption">准备 order.bpmn 文件。默认连接本地 Gateway :26500 与 PD :26501。</p></div>
+          <div class="code-footer"><a href="https://github.com/workite-io/workite/blob/main/clients/go/README.md">SDK 与 CLI 指南 <span aria-hidden="true">↗</span></a><a href="https://github.com/workite-io/workite/tree/main/scripts">本地启动脚本 <span aria-hidden="true">↗</span></a></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="closing-section wrap reveal" id="current-scope" aria-labelledby="closing-title"><p class="eyebrow">THE WIND MAY CHANGE. THE WORKFLOW KEEPS MOVING.</p><h2 id="closing-title">让下一程，<br>可靠地开始。</h2><p>和 Workite 一起，构建持续向前的业务流程。</p><div class="closing-actions"><a class="button primary" href="https://github.com/workite-io/workite">探索 Workite <span aria-hidden="true">↗</span></a><a class="button secondary" href="https://github.com/workite-io/workite/issues">参与讨论 <span aria-hidden="true">↗</span></a></div><p class="development-note">积极开发中 · 0.1.0-SNAPSHOT<br>完整 BPMN 执行语义仍在开发；首个稳定版本前，API 与存储兼容性可能演进。</p></section>
+  </main>
+
+  <footer class="site-footer wrap"><div class="footer-top"><a class="footer-name" href="#top">Workite<span>.</span></a><p>Make workflows work.</p><div><a href="https://github.com/workite-io/workite">GitHub ↗</a><a href="https://github.com/workite-io/workite/blob/main/CONTRIBUTING.md">贡献指南 ↗</a><a href="https://github.com/workite-io/workite/blob/main/COMMERCIAL-LICENSING.md">商业许可 ↗</a></div></div><div class="footer-bottom"><p>© <span id="year">2026</span> Workite. <a href="https://github.com/workite-io/workite/blob/main/LICENSE">Workite Community License 1.0</a></p><p>源码可用。社区许可适用于非商业用途与有限商业评估；商业生产与托管服务需取得书面商业许可。</p></div></footer>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <noscript><p class="noscript-note">产品内容与架构可直接阅读。启用 JavaScript 后可切换演示场景、任务步骤与代码示例。</p></noscript>
+</body>
+</html>
